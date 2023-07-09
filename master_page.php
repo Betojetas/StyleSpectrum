@@ -34,7 +34,7 @@ require_once 'conexion.php';
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Inicio</a>
+                            <a class="nav-link" href="admin.php">Inicio</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -43,21 +43,21 @@ require_once 'conexion.php';
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="agProducto.php">Agregar productos</a>
-                                <a class="dropdown-item" href="elProducto.php">Eliminar productos</a>
-                                <a class="dropdown-item" href="acProducto.php">Actualizar productos</a>
+                                <a class="dropdown-item" href="eliProducto.php">Eliminar productos</a>
+                                <a class="dropdown-item" href="actProducto.php">Actualizar productos</a>
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Inventario</a>
+                            <a class="nav-link" href="inventario.php">Inventario</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Pedidos</a>
+                            <a class="nav-link" href="pedidos.php">Pedidos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Usuarios</a>
+                            <a class="nav-link" href="usuarios.php">Usuarios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Configuración</a>
+                            <a class="nav-link" href="configuracion.php">Configuración</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
@@ -73,9 +73,10 @@ require_once 'conexion.php';
                 </div>
             </div>
         </nav>
-
+        <br>
+        <br>
+        <br>
     <?php } else { ?>
-
         <!-- Navbar usuario -->
         <nav class="navbar navbar-expand-md navbar-custom">
             <div class="container">
@@ -121,8 +122,7 @@ require_once 'conexion.php';
             </div>
         </nav>
     <?php } ?>
-
-
+    <br>
     <!-- Agrega los enlaces a los archivos JS de Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>

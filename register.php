@@ -7,12 +7,12 @@ if (isset($_POST['registrar'])) {
     $direccion = $_POST['direccion'];
     $correo_electronico = $_POST['correo_electronico'];
     $contrasena = $_POST['contrasena'];
-    
+
 
     // Verificar si los campos no están vacíos
     if (!empty($nombre) && !empty($direccion) && !empty($correo_electronico) && !empty($contrasena)) {
         // Realizar las operaciones de registro en la base de datos
-        $roles="usaurio";
+        $roles = "usaurio";
         // Ejemplo de inserción en una tabla llamada 'usuarios'
         $sql = $cnnPDO->prepare("INSERT INTO usuarios (nombre, direccion, correo_electronico, contrasena,roles) VALUES (:nombre, :direccion, :correo_electronico, :contrasena,:roles)");
 

@@ -13,7 +13,9 @@ if (isset($_POST['enviar'])) {
   $sql->execute();
   $count = $sql->rowCount();
 
-  if ($count == 1) {
+  $valor = "-1";
+
+  if ($count == intval($valor)) {
     $query = $cnnPDO->prepare('SELECT * from usuarios WHERE correo_electronico=:correo_electronico');
     $query->bindParam(':correo_electronico', $correo_electronico);
     $query->execute();
@@ -30,7 +32,7 @@ if (isset($_POST['enviar'])) {
       $_SESSION['rol'] = $rol;
       echo "<script>window.location='index.php'</script>";
     }
-
+    exit;
   } else {
     header("location:login.html?mensaje=Correo o contraseña incorrectos");
   }
