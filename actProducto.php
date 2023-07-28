@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar Productos</title>
     <link rel="stylesheet" href="css/actproducto.css">
+    <!-- Librerias de sweetalert 2-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/alertas.js"></script>
+
 </head>
 
 <body>
@@ -47,24 +52,20 @@
             // Generar la estructura de la card con los datos del producto
             echo '<div class="col-md-3">';
             echo '<div class="card card-product">';
-            echo '<form method="POST" action="actualizarProducto.php">';
             echo '<div>';
-            echo '<button class="update-btn" type="submit"><i class="fas fa-sync-alt"></i></button>';
             echo '<input type="hidden" name="id_producto" value="' . $id_producto . '">';
+            echo '<a href="actualizarProducto.php?id_producto=' . $id_producto . '"><button class="update-btn" type="submit"><i class="fas fa-sync-alt"></i></button></a> ';
             echo '</div>';
-
             echo '<center><img class="card-img-top" src="imgProductos/' . $codigo_imagen . '" alt="Imagen del producto" style="max-width: 200px; max-height: 200px;"></center>';
-
-
             echo '<div class="card-body">';
             echo '<h5 class="card-title">' . $nombre . '</h5>';
             echo '<p class="card-text">Precio: $' . $precio . '</p>';
             echo '<p class="card-text">Talla: ' . $talla . '</p>';
             echo '</div>';
-            echo '</form>';
             echo '</div>';
             echo '</div>';
-
+            // echo '<a href="actualizarProducto.php?id=' . $id_producto . '"><button class="update-btn" type="submit"><i class="fas fa-sync-alt"></i></button></a> ';
+        
             // Incrementar el contador
             $contador++;
 
@@ -75,7 +76,6 @@
         }
         ?>
     </div>
-
 
 </body>
 

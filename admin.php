@@ -12,10 +12,7 @@
     <?php
     // traemos el nav de la master_page
     require_once 'master_page.php';
-    // validamos si es admin si no lo sacamos por rata
-    if (isset($_SESSION['rol']) != "admin") {
-        header("Location:login.html");
-    }
+
     ?>
 </body>
 

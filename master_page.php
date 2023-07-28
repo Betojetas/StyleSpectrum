@@ -17,7 +17,10 @@ require_once 'conexion.php';
 </head>
 
 <body>
-    <?php if ($_SESSION['rol'] === "admin") { ?>
+    <?php
+    // validamos si es admin si no lo sacamos por rata
+    if ($_SESSION['rol'] === "admin") {
+        ?>
         <!-- Navbar admin -->
         <nav class="navbar navbar-expand-md navbar-custom">
             <div class="container">

@@ -1,3 +1,69 @@
+<?php
+ob_start();
+require_once 'conexion.php';
+
+if (isset($_POST['actualizar'])) {
+
+    $id_producto = 3;
+
+
+    // Obtener los valores actualizados del formulario
+    $nombre_actualizado = $_POST['nombre_producto'];
+    $precio_actualizado = $_POST['precio'];
+    $cantidad_actualizada = $_POST['cantidad'];
+    $id_categoria_actualizada = $_POST['id_categoria'];
+    $color_actualizado = $_POST['color'];
+    $talla_actualizada = $_POST['talla'];
+
+    // Verificar si se ha enviado una nueva imagen
+    if (isset($_FILES['imagen_producto']) && $_FILES['imagen_producto']['error'] === UPLOAD_ERR_OK) {
+        // Obtener información de la nueva imagen
+        $nombre_archivo_nuevo = $_FILES['imagen_producto']['name'];
+        $ruta_destino_nueva = 'imgProductos/' . $nombre_archivo_nuevo;
+
+        // Mover la nueva imagen al directorio de destino
+        move_uploaded_file($_FILES['imagen_producto']['tmp_name'], $ruta_destino_nueva);
+
+        // Actualizar el nombre de la imagen en la base de datos y en la variable $codigo_imagen
+        $codigo_imagen = $nombre_archivo_nuevo;
+    }
+
+    // Realizar la consulta para actualizar los datos del producto en la base de datos
+    $sql = $cnnPDO->prepare("UPDATE productos
+        SET nombre = :nombre, precio = :precio, id_categoria = :id_categoria,
+            color = :color, talla = :talla
+        WHERE id_producto = :id_producto
+    ");
+
+    $sql->bindParam(':nombre', $nombre_actualizado);
+    $sql->bindParam(':precio', $precio_actualizado);
+    $sql->bindParam(':id_categoria', $id_categoria_actualizada);
+    $sql->bindParam(':color', $color_actualizado);
+    $sql->bindParam(':talla', $talla_actualizada);
+    $sql->bindParam(':id_producto', $id_producto);
+    $sql->execute();
+
+    $sql2 = $cnnPDO->prepare("UPDATE inventario
+        SET cantidad = :cantidad
+        WHERE id_producto = :id_producto
+    ");
+
+    $sql2->bindParam(':cantidad', $cantidad_actualizada);
+    $sql2->bindParam(':id_producto', $id_producto);
+    $sql2->execute();
+
+    $resultado = $sql;
+    if ($resultado) {
+        // Redireccionar a actProducto.php
+        header('Location: actProducto.php?mensaje2=Se actualizó el producto correctamente');
+        exit();
+    } else {
+        echo "Error al actualizar el producto";
+    }
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +71,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+
 </head>
 
 <body>
@@ -19,11 +87,10 @@
 
     ?>
     <?php
-
     // Verificar si se envió una ID de producto o si las variables están definidas
-    if (isset($_POST['id_producto']) || isset($nombre)) {
+    if (isset($_GET['id_producto'])) {
         // Obtener la ID del producto si está definida
-        $id_producto = isset($_POST['id_producto']) ? $_POST['id_producto'] : '';
+        $id_producto = isset($_GET['id_producto']) ? $_GET['id_producto'] : '';
 
         // Realizar la consulta para obtener los datos del producto y del inventario según la ID
         $sql = $cnnPDO->prepare("SELECT p.* , p.nombre AS nombre_producto, i.*, c.* FROM productos p JOIN inventario i ON p.id_producto = i.id_producto JOIN categorias c ON p.id_categoria = c.id_categoria WHERE p.id_producto = :id");
@@ -53,6 +120,7 @@
             $codigo_imagen = isset($producto['codigo_imagen']) ? $producto['codigo_imagen'] : '';
         }
     } else {
+
         header('Location: actProducto.php'); // Redireccionar a actProducto.php
         exit; // Detener la ejecución del resto del código
     }
@@ -163,58 +231,6 @@
         </div><br><br>
 
     </div>
-    <?php
-    if (isset($_POST['actualizar'])) {
-        // Obtener el ID del producto
-        $id_producto = $_POST['id_producto'];
-
-        // Obtener los valores actualizados del formulario
-        $nombre_actualizado = $_POST['nombre_producto'];
-        $precio_actualizado = $_POST['precio'];
-        $cantidad_actualizada = $_POST['cantidad'];
-        $id_categoria_actualizada = $_POST['id_categoria'];
-        $color_actualizado = $_POST['color'];
-        $talla_actualizada = $_POST['talla'];
-
-        // Verificar si se ha enviado una nueva imagen
-        if (isset($_FILES['imagen_producto']) && $_FILES['imagen_producto']['error'] === UPLOAD_ERR_OK) {
-            // Obtener información de la nueva imagen
-            $nombre_archivo_nuevo = $_FILES['imagen_producto']['name'];
-            $ruta_destino_nueva = 'imgProductos/' . $nombre_archivo_nuevo;
-
-            // Mover la nueva imagen al directorio de destino
-            move_uploaded_file($_FILES['imagen_producto']['tmp_name'], $ruta_destino_nueva);
-
-            // Actualizar el nombre de la imagen en la base de datos y en la variable $codigo_imagen
-            $codigo_imagen = $nombre_archivo_nuevo;
-        }
-
-        // Realizar la consulta para actualizar los datos del producto en la base de datos
-        $sql = $cnnPDO->prepare("UPDATE p
-        SET p.nombre = :nombre, p.precio = :precio, p.id_categoria = :id_categoria,
-            p.color = :color, p.talla = :talla, i.cantidad = :cantidad
-        FROM productos AS p
-        JOIN inventario AS i ON p.id_producto = i.id_producto
-        WHERE p.id_producto = :id_producto");
-
-        $sql->bindParam(':nombre', $nombre_actualizado);
-        $sql->bindParam(':precio', $precio_actualizado);
-        $sql->bindParam(':id_categoria', $id_categoria_actualizada);
-        $sql->bindParam(':color', $color_actualizado);
-        $sql->bindParam(':talla', $talla_actualizada);
-        $sql->bindParam(':cantidad', $cantidad_actualizada);
-        $sql->bindParam(':id_producto', $id_producto);
-        $sql->execute();
-
-        // Actualizar los datos del inventario si es necesario
-        // ...
-    
-        // Redireccionar a actProducto.php
-        header('Location: actProducto.php');
-        exit(); // Asegúrate de incluir exit() después de la redirección para detener la ejecución del script posteriormente
-    }
-
-    ?>
 </body>
 
 </html>
