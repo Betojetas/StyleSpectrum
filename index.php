@@ -22,7 +22,6 @@
       $sql->execute();
       $productos = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-
       // Generar las cards para cada producto
       foreach ($productos as $producto) {
         $nombre = $producto['nombre'];
@@ -31,32 +30,30 @@
         $color = $producto['color'];
         $codigo_imagen = $producto['codigo_imagen'];
         $id_producto = $producto['id_producto'];
-
         ?>
+
         <div class="col-md-3">
-          <div class="card">
-            <img class="card-img-top" src="imgProductos/<?php echo $codigo_imagen; ?>" alt="Imagen del producto">
-            <div class="card-body">
-              <h5 class="card-title">
-                <?php echo $nombre; ?>
-              </h5>
-              <p class="card-text">Precio: $
-                <?php echo $precio; ?>
-              </p>
-              <p class="card-text">Talla:
-                <?php echo $talla; ?>
-              </p>
-              <button class="btn btn-primary add-to-cart" value="<?php echo $id_producto; ?>"
-                data-product-id="<?php echo $id_producto; ?>">Agregar al
-                carrito</button>
-            </div>
-          </div>
+          <a href="detalle_producto.php?id_producto=<?php echo $id_producto; ?>&codigo_imagen=<?php echo $codigo_imagen; ?>&nombre=<?php echo $nombre; ?>&precio=<?php echo $precio; ?>"
+            style="text-decoration: none; color: inherit;">
+            <div class="card">
+              <img class="card-img-top" src="imgProductos/<?php echo $codigo_imagen; ?>" alt="Imagen del producto">
+              <div class="card-body">
+          </a>
+          <h5 class="card-title">
+            <?php echo $nombre; ?>
+          </h5>
+          <p class="card-text">Precio: $
+            <?php echo $precio; ?>
+          </p>
         </div>
-        <?php
-      }
-      ?>
+      </div>
 
     </div>
+
+    <?php
+      }
+      ?>
+  </div>
   </div>
 
 
