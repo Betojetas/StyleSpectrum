@@ -79,7 +79,12 @@ require_once 'conexion.php';
         <br>
         <br>
         <br>
-    <?php } else { ?>
+    <?php } else {
+        if (!isset($_SESSION['carrito'])) {
+            $_SESSION['carrito'] = array();
+        }
+
+        $cantidad_carrito = count($_SESSION['carrito']); ?>
         <!-- Navbar usuario -->
         <nav class="navbar navbar-expand-md navbar-custom">
             <div class="container">
@@ -111,8 +116,9 @@ require_once 'conexion.php';
                             <a class="nav-link" href="#">Contacto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-shopping-cart cart-icon"></i>
+                            <a class="nav-link" onclick="irAComprarProducto()">
+                                <i class=" fas fa-shopping-cart cart-icon"></i>
+                                <span id="cantidad-carrito">0</span>
                             </a>
                         </li>
                         <li class="nav-item">

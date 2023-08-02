@@ -56,7 +56,6 @@
         echo '<img src="imgProductos/' . $codigo_imagen . '" alt="Imagen del producto">';
         echo '</div>';
         echo '<div class="info">
-        <form action="tu_archivo_php.php" method="post">
             <div class="tallas">
                 <h4>Selecciona la talla</h4>
                 <input type="radio" name="talla" value="S" id="talla-s" required>
@@ -66,13 +65,14 @@
                 <input type="radio" name="talla" value="L" id="talla-l" required>
                 <label for="talla-l">L</label>
             </div>
-            <br>
-            <!-- Otros elementos del formulario y botón de envío si es necesario -->
-        </form>';
+            <br>';
 
-        echo '<button onclick="agregarAlCarrito(\'' . $nombre . '\',' . $precio . ')">agregar al carrito</button>';
+        echo '<button onclick="agregarAlCarrito(' . $id_producto . ', \'' . $nombre . '\', ' . $precio . ', \'' . $codigo_imagen . '\')">agregar al carrito</button>';
 
         echo '</div>';
+
+        // Mostrar la cantidad de productos en el carrito
+        echo '<script>document.getElementById("cantidad-carrito").innerText = ' . $cantidad_carrito . ';</script>';
 
         echo '<div class="carrito" id="carrito-container" style="display: none;">
         <br>
@@ -80,8 +80,7 @@
         <ul id="lista-carrito">
         </ul>
         <p>Total: $<span id="total-carrito">0</span></p>
-    </div>
-    ';
+        </div>';
 
     }
     ?>
@@ -102,26 +101,24 @@
             cuerpo.removeChild(alertaDiv);
         }, 3000); // 3000 ms = 3 segundos
     }
-
+    //carrito
     let carrito = [];
     let total = 0;
 
-    function agregarAlCarrito(nombre, precio) {
+    function agregarAlCarrito(id_producto, nombre, precio, codigo_imagen) {
         const tallaSeleccionada = document.querySelector('input[name="talla"]:checked');
         if (!tallaSeleccionada) {
-
-            alerta("Por favor, selecciona una talla antes de agregar al carrito.");
+            alert("Por favor, selecciona una talla antes de agregar al carrito.");
             return; // La función se detiene si no hay una talla seleccionada.
         }
-        total += precio;
-        mostrarCarrito();
-        mostrarCarritoPorUnTiempo();
+
+        const talla = tallaSeleccionada.value; // Obtener el valor de la talla seleccionada o cadena vacía si no hay talla seleccionada
 
         // Buscar el producto en el carrito
-        const productoEnCarrito = carrito.find((item) => item.nombre === nombre);
+        const productoEnCarrito = carrito.find((item) => item.id_producto === id_producto && item.talla === talla);
         if (productoEnCarrito) {
             if (productoEnCarrito.cantidad === 10) {
-                alerta("No se pueden agregar más de 10 unidades del mismo producto.");
+                alert("No se pueden agregar más de 10 unidades del mismo producto.");
                 return;
             }
 
@@ -129,14 +126,19 @@
             productoEnCarrito.cantidad++;
             productoEnCarrito.precioTotal += precio;
         } else {
-            // Si el producto no está en el carrito, agregarlo con cantidad y precio inicial
-            carrito.push({ nombre, precio, cantidad: 1, precioTotal: precio });
+            // Si el producto no está en el carrito, agregarlo con cantidad, precio, e incluir la talla, el código de la imagen y el ID del producto
+            carrito.push({ id_producto, nombre, precio, talla, codigo_imagen, cantidad: 1, precioTotal: precio });
         }
 
         total += precio;
         mostrarCarrito();
         mostrarCarritoPorUnTiempo();
+
+        var cantidadActual = parseInt(document.getElementById("cantidad-carrito").innerText);
+        document.getElementById("cantidad-carrito").innerText = cantidadActual + 1;
     }
+
+
 
     function mostrarCarritoPorUnTiempo() {
         const carritoContainer = document.getElementById("carrito-container");
@@ -154,7 +156,6 @@
 
         listaCarrito.innerHTML = "";
 
-
         if (numProductos === 0) {
             listaCarrito.textContent = "El carrito está vacío.";
             totalCarrito.textContent = "$0";
@@ -162,7 +163,7 @@
             let total = 0;
             for (const item of carrito) {
                 const li = document.createElement("li");
-                li.textContent = `${item.nombre} - Cantidad: ${item.cantidad}`;
+                li.textContent = `${item.nombre} - Talla: ${item.talla} - Cantidad: ${item.cantidad}`; // Agregar la talla a la lista
                 listaCarrito.appendChild(li);
                 total += item.precioTotal;
             }
@@ -178,8 +179,17 @@
         setTimeout(() => {
             carritoContainer.classList.remove("nuevo-producto");
         }, 7000);
+    }
 
+    function irAComprarProducto() {
+        // Obtener el carrito en formato JSON
+        const carritoJSON = JSON.stringify(carrito);
 
+        // Codificar el carrito en base64 para que la URL no tenga problemas con caracteres especiales
+        const carritoBase64 = btoa(carritoJSON);
+
+        // Redireccionar a la página de comprar_producto.php con el carrito como parámetro en la URL
+        window.location.href = 'comprar_producto.php?carrito=' + carritoBase64;
     }
 
 </script>
