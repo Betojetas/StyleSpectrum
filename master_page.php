@@ -79,12 +79,7 @@ require_once 'conexion.php';
         <br>
         <br>
         <br>
-    <?php } else {
-        if (!isset($_SESSION['carrito'])) {
-            $_SESSION['carrito'] = array();
-        }
-
-        $cantidad_carrito = count($_SESSION['carrito']); ?>
+    <?php } else { ?>
         <!-- Navbar usuario -->
         <nav class="navbar navbar-expand-md navbar-custom">
             <div class="container">
@@ -98,38 +93,62 @@ require_once 'conexion.php';
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <!-- Contenido del navbar -->
+                <?php
+                // Obtener el nombre de la página actual
+                $currentPage = basename($_SERVER['PHP_SELF']);
+                ?>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
+                        <?php if ($currentPage !== 'llenarDatos.php' && $currentPage !== 'comprar_producto.php'): ?>
+                            <!-- <li class="nav-item">
+                        <a class="nav-link" href="#">Inicio</a>
+                    </li> -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Hombre</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Mujer</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Ofertas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Contacto</a>
+                            </li>
+                            <?php
+                            if (!isset($_SESSION['carrito'])) {
+                                $_SESSION['carrito'] = array();
+                            }
+
+                            $cantidad_carrito = count($_SESSION['carrito']);
+                            ?>
+
+                            <li class="nav-item">
+                                <a class="nav-link" onclick="irAComprarProducto()">
+                                    <i class="fas fa-shopping-cart cart-icon"></i>
+                                    <span id="cantidad-carrito">
+                                        <?php echo $cantidad_carrito; ?>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <img src="img/perfil.png" class="profile-logo" />
+                                </a>
+                            </li>
+                        </ul>
+                    <?php endif; ?>
+
+                    <?php if ($currentPage === 'comprar_producto.php'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Inicio</a>
+                            <a class="nav-link" href="index.php">Seguir comprando</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Hombre</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Mujer</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Ofertas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contacto</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" onclick="irAComprarProducto()">
-                                <i class=" fas fa-shopping-cart cart-icon"></i>
-                                <span id="cantidad-carrito">0</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <img src="img/perfil.png" class="profile-logo" />
-                            </a>
-                        </li>
-                    </ul>
+                    <?php endif; ?>
+
                 </div>
             </div>
         </nav>
+
     <?php } ?>
     <br>
     <!-- Agrega los enlaces a los archivos JS de Bootstrap -->

@@ -67,12 +67,11 @@
             </div>
             <br>';
 
-        echo '<button onclick="agregarAlCarrito(' . $id_producto . ', \'' . $nombre . '\', ' . $precio . ', \'' . $codigo_imagen . '\')">agregar al carrito</button>';
+        echo '<button onclick="agregarAlCarrito(' . $id_producto . ', \'' . $nombre . '\', ' . $precio . ', \'' . $codigo_imagen . '\')">agregar al carrito</button><br><br>';
+
 
         echo '</div>';
 
-        // Mostrar la cantidad de productos en el carrito
-        echo '<script>document.getElementById("cantidad-carrito").innerText = ' . $cantidad_carrito . ';</script>';
 
         echo '<div class="carrito" id="carrito-container" style="display: none;">
         <br>
@@ -81,6 +80,7 @@
         </ul>
         <p>Total: $<span id="total-carrito">0</span></p>
         </div>';
+
 
     }
     ?>
@@ -108,7 +108,7 @@
     function agregarAlCarrito(id_producto, nombre, precio, codigo_imagen) {
         const tallaSeleccionada = document.querySelector('input[name="talla"]:checked');
         if (!tallaSeleccionada) {
-            alert("Por favor, selecciona una talla antes de agregar al carrito.");
+            alerta("Por favor, selecciona una talla antes de agregar al carrito.");
             return; // La función se detiene si no hay una talla seleccionada.
         }
 
@@ -118,7 +118,7 @@
         const productoEnCarrito = carrito.find((item) => item.id_producto === id_producto && item.talla === talla);
         if (productoEnCarrito) {
             if (productoEnCarrito.cantidad === 10) {
-                alert("No se pueden agregar más de 10 unidades del mismo producto.");
+                alerta("No se pueden agregar más de 10 unidades del mismo producto.");
                 return;
             }
 
@@ -134,21 +134,10 @@
         mostrarCarrito();
         mostrarCarritoPorUnTiempo();
 
+
         var cantidadActual = parseInt(document.getElementById("cantidad-carrito").innerText);
         document.getElementById("cantidad-carrito").innerText = cantidadActual + 1;
     }
-
-
-
-    function mostrarCarritoPorUnTiempo() {
-        const carritoContainer = document.getElementById("carrito-container");
-        carritoContainer.style.display = "block"; // Mostrar el carrito
-
-        setTimeout(() => {
-            carritoContainer.style.display = "none"; // Ocultar el carrito después de 2 segundos (ajústalo según tus necesidades)
-        }, 7000); // 7000 milisegundos = 7 segundos (ajústalo según tus necesidades)
-    }
-
     function mostrarCarrito() {
         const listaCarrito = document.getElementById("lista-carrito");
         const totalCarrito = document.getElementById("total-carrito");
@@ -179,7 +168,19 @@
         setTimeout(() => {
             carritoContainer.classList.remove("nuevo-producto");
         }, 7000);
+
+
     }
+
+    function mostrarCarritoPorUnTiempo() {
+        const carritoContainer = document.getElementById("carrito-container");
+        carritoContainer.style.display = "block"; // Mostrar el carrito
+
+        setTimeout(() => {
+            carritoContainer.style.display = "none"; // Ocultar el carrito después de 2 segundos (ajústalo según tus necesidades)
+        }, 7000); // 7000 milisegundos = 7 segundos (ajústalo según tus necesidades)
+    }
+
 
     function irAComprarProducto() {
         // Obtener el carrito en formato JSON
@@ -192,6 +193,18 @@
         window.location.href = 'comprar_producto.php?carrito=' + carritoBase64;
     }
 
+
 </script>
+<?php
+if (!isset($_SESSION['carrito'])) {
+    $_SESSION['carrito'] = array();
+}
+
+$cantidad_carrito = count($_SESSION['carrito']);
+
+// Mostrar la cantidad de productos en el carrito
+echo '<script>document.getElementById("cantidad-carrito").innerText = ' . $cantidad_carrito . ';</script>';
+
+?>
 
 </html>
