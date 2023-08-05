@@ -80,12 +80,14 @@ require_once 'conexion.php';
         <br>
         <br>
     <?php } else { ?>
+
+
         <!-- Navbar usuario -->
         <nav class="navbar navbar-expand-md navbar-custom">
             <div class="container">
                 <!-- Logo de la empresa -->
-                <a class="navbar-brand" href="index.php">
-                    <img src="img/logo.jpeg" width="150" />
+                <a class="navbar-brand" onclick="seguirComprando()">
+                    <img src=" img/logo.jpeg" width="150" />
                 </a>
                 <!-- Botón para colapsar el navbar en pantallas pequeñas -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -100,6 +102,7 @@ require_once 'conexion.php';
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <?php if ($currentPage !== 'llenarDatos.php' && $currentPage !== 'comprar_producto.php'): ?>
+
                             <!-- <li class="nav-item">
                         <a class="nav-link" href="#">Inicio</a>
                     </li> -->
@@ -115,19 +118,11 @@ require_once 'conexion.php';
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Contacto</a>
                             </li>
-                            <?php
-                            if (!isset($_SESSION['carrito'])) {
-                                $_SESSION['carrito'] = array();
-                            }
-
-                            $cantidad_carrito = count($_SESSION['carrito']);
-                            ?>
-
                             <li class="nav-item">
                                 <a class="nav-link" onclick="irAComprarProducto()">
                                     <i class="fas fa-shopping-cart cart-icon"></i>
                                     <span id="cantidad-carrito">
-                                        <?php echo $cantidad_carrito; ?>
+
                                     </span>
                                 </a>
                             </li>
@@ -141,13 +136,51 @@ require_once 'conexion.php';
 
                     <?php if ($currentPage === 'comprar_producto.php'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="index.php">Seguir comprando</a>
+                            <a class="nav-link" href="#" onclick="seguirComprando()">Seguir comprando</a>
                         </li>
                     <?php endif; ?>
 
                 </div>
             </div>
         </nav>
+
+        <script>
+
+            // Función para obtener la cantidad del carrito desde la URL
+            function obtenerCantidadCarritoDesdeURL() {
+                // Obtener el valor del parámetro 'carrito' de la URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const carritoBase64 = urlParams.get('carrito');
+                if (carritoBase64) {
+                    try {
+                        // Decodificar el carrito desde base64 y convertirlo a un objeto JavaScript
+                        const carritoJSON = atob(carritoBase64);
+                        const carrito = JSON.parse(carritoJSON);
+
+                        // Calcular la cantidad total de productos en el carrito
+                        let cantidadTotal = 0;
+                        for (const item of carrito) {
+                            cantidadTotal += item.cantidad;
+                        }
+
+                        return cantidadTotal;
+                    } catch (error) {
+                        console.error("Error al decodificar o parsear el carrito desde la URL:", error);
+                    }
+                }
+                return 0;
+            }
+
+            // Función para actualizar la cantidad del carrito en el elemento span
+            function actualizarCantidadCarrito() {
+                const cantidadCarrito = obtenerCantidadCarritoDesdeURL();
+                document.getElementById("cantidad-carrito").innerText = cantidadCarrito;
+            }
+
+            // Llamar a la función para actualizar la cantidad del carrito al cargar la página
+            actualizarCantidadCarrito();
+
+        </script>
 
     <?php } ?>
     <br>

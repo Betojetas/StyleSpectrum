@@ -17,6 +17,29 @@
       <?php
       require_once 'conexion.php';
 
+      // Verificar si el parámetro 'carrito' está presente en la URL
+      if (isset($_GET['carrito'])) {
+        // Obtener el valor del parámetro 'carrito'
+        $carritoBase64 = $_GET['carrito'];
+
+        // Decodificar el carrito desde base64
+        $carritoJSON = base64_decode($carritoBase64);
+
+        // Convertir el JSON decodificado a un array de productos
+        $carrito = json_decode($carritoJSON, true);
+        //print_r($carrito);
+      } else {
+        // Si el parámetro 'carrito' no está presente en la URL, el carrito está vacío.
+        $carrito = array();
+      }
+
+      // Obtener el carrito en formato JSON
+      $carritoJSON = json_encode($carrito);
+
+      // Codificar el carrito en base64 para que la URL no tenga problemas con caracteres especiales
+      $carritoBase64 = base64_encode($carritoJSON);
+
+
       // Realizar la consulta para obtener los datos de los productos
       $sql = $cnnPDO->prepare("SELECT * FROM productos");
       $sql->execute();
@@ -32,8 +55,10 @@
         $id_producto = $producto['id_producto'];
         ?>
 
+
+
         <div class="col-md-3">
-          <a href="detalle_producto.php?id_producto=<?php echo $id_producto; ?>&codigo_imagen=<?php echo $codigo_imagen; ?>&nombre=<?php echo $nombre; ?>&precio=<?php echo $precio; ?>"
+          <a href="detalle_producto.php?id_producto=<?php echo $id_producto; ?>&codigo_imagen=<?php echo $codigo_imagen; ?>&nombre=<?php echo $nombre; ?>&precio=<?php echo $precio; ?>&carrito=<?php echo empty($carrito) ? '' : $carritoBase64; ?>"
             style="text-decoration: none; color: inherit;">
             <div class="card">
               <img class="card-img-top" src="imgProductos/<?php echo $codigo_imagen; ?>" alt="Imagen del producto">
@@ -55,8 +80,7 @@
       ?>
   </div>
   </div>
-
-
+  <script src="js/funcionesCarrito.js"></script>
 </body>
 
 </html>

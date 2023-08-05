@@ -4,156 +4,12 @@
 <head>
     <title>Comprar Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f5f5f5;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
-
-        }
-
-        .cart-item img {
-            max-width: 100px;
-            margin-right: 20px;
-
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-info h3,
-        .cart-item-info p {
-            margin: 0;
-        }
-
-        .total-row {
-            background-color: #f0f0f0;
-            font-weight: bold;
-            padding: 10px;
-            text-align: right;
-
-        }
-
-        .checkout-btn {
-            display: block;
-            margin: 30px auto;
-            text-align: center;
-            background-color: #000000;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            position: absolute;
-            left: 70%;
-        }
-
-
-        .checkout-btn:hover {
-            background-color: #222222;
-        }
-
-        .cart-items {
-            padding: 10px;
-            width: 80%;
-
-        }
-
-        .cart-item-info-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .cart-item-image {
-            max-width: 100px;
-            margin-right: 20px;
-        }
-
-        .cart-item-details {
-            flex: 1;
-
-        }
-
-        .total-row-container {
-            text-align: right;
-            font-weight: bold;
-            background-color: #f0f0f0;
-            padding: 10px;
-            margin-top: 10px;
-            width: 80%;
-        }
-
-        /* Estilos anteriores... */
-
-        .quantity-input {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-            width: 100px;
-        }
-
-        .quantity-btn {
-            background-color: #f0f0f0;
-            color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-        }
-
-        .quantity-btn:hover {
-            background-color: #ddd;
-        }
-
-        .quantity-btn.disabled {
-            pointer-events: none;
-            opacity: 0.5;
-        }
-
-        .quantity-input input {
-            text-align: center;
-            border: none;
-            width: 40px;
-            height: 30px;
-            font-size: 14px;
-            font-weight: bold;
-            outline: none;
-        }
-    </style>
+    <link rel="stylesheet" href="css/comprar_producto.css">
 </head>
-<?php
-// // Asegurarse de que el parámetro carrito esté presente en la URL
-// if (isset($_GET['carrito'])) {
-//     // Decodificar los datos base64
-//     $carritoBase64 = $_GET['carrito'];
-//     $carritoJSON = base64_decode($carritoBase64);
-
-//     // Convertir los datos JSON de nuevo a un arreglo de PHP
-//     $carrito = json_decode($carritoJSON, true);
-//     $cantidad_carrito = $carrito[0]['cantidad'];
-
-// }
-?>
 
 <body>
     <?php require_once 'master_page.php'; ?>
+
     <div class="container">
         <h1></h1>
         <div class="cart-items"></div>
@@ -164,9 +20,6 @@
     </div>
 
     <script>
-
-
-
         const urlParams = new URLSearchParams(window.location.search);
         const carritoBase64 = urlParams.get('carrito');
         const carritoJSON = atob(carritoBase64);
@@ -244,9 +97,7 @@
                         <p>Precio Unitario: <b>$${producto.precio}</b></p>
                         <p>Precio Total: <b>$${producto.precioTotal}</b></p>
                     </div>
-                </div>
-                
-            `;
+                </div>`;
 
             cartItemsContainer.appendChild(cartItemDiv);
             totalCompra += producto.precioTotal;
@@ -254,7 +105,10 @@
 
         const totalCompraSpan = document.getElementById('totalCompra');
         totalCompraSpan.textContent = `$${totalCompra}`;
+
     </script>
+    <script src="js/funcionesCarrito.js"></script>
 </body>
+
 
 </html>
