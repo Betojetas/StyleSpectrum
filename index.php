@@ -55,30 +55,34 @@
         $id_producto = $producto['id_producto'];
         ?>
 
-
-
         <div class="col-md-3">
-          <a href="detalle_producto.php?id_producto=<?php echo $id_producto; ?>&codigo_imagen=<?php echo $codigo_imagen; ?>&nombre=<?php echo $nombre; ?>&precio=<?php echo $precio; ?>&carrito=<?php echo empty($carrito) ? '' : $carritoBase64; ?>"
-            style="text-decoration: none; color: inherit;">
-            <div class="card">
-              <img class="card-img-top" src="imgProductos/<?php echo $codigo_imagen; ?>" alt="Imagen del producto">
-              <div class="card-body">
-          </a>
-          <h5 class="card-title">
-            <?php echo $nombre; ?>
-          </h5>
-          <p class="card-text">Precio: $
-            <?php echo $precio; ?>
-          </p>
+          <div class="card">
+            <div class="card-image">
+              <a href="detalle_producto.php?id_producto=<?php echo $id_producto; ?>&codigo_imagen=<?php echo $codigo_imagen; ?>&nombre=<?php echo $nombre; ?>&precio=<?php echo $precio; ?>&carrito=<?php echo empty($carrito) ? '' : $carritoBase64; ?>"
+                style="text-decoration: none; color: inherit;">
+                <img class="card-img-top" src="imgProductos/<?php echo $codigo_imagen; ?>" alt="Imagen del producto">
+                <div class="card-overlay">
+                  <div class="card-overlay-text">
+
+                    Precio: $
+                    <?php echo $precio; ?>
+                    <br>
+                    Descripción:
+                    <?php echo $nombre; ?>
+
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
 
-    </div>
 
-    <?php
+
+        <?php
       }
       ?>
-  </div>
+    </div>
   </div>
   <script src="js/funcionesCarrito.js"></script>
 </body>

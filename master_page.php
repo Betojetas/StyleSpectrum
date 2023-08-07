@@ -136,7 +136,7 @@ require_once 'conexion.php';
 
                     <?php if ($currentPage === 'comprar_producto.php'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="seguirComprando()">Seguir comprando</a>
+                            <a class="nav-link" onclick="seguirComprando()">Seguir comprando</a>
                         </li>
                     <?php endif; ?>
 

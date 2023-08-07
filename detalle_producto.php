@@ -56,18 +56,20 @@
         echo '<img src="imgProductos/' . $codigo_imagen . '" alt="Imagen del producto">';
         echo '</div>';
         echo '<div class="info">
-            <div class="tallas">
-                <h4>Selecciona la talla</h4>
-                <input type="radio" name="talla" value="S" id="talla-s" required>
-                <label for="talla-s">S</label>
-                <input type="radio" name="talla" value="M" id="talla-m"  required>
-                <label for="talla-m">M</label>
-                <input type="radio" name="talla" value="L" id="talla-l" required>
-                <label for="talla-l">L</label>
-            </div>
-            <br>';
+        <div class="tallas">
+          <h4>Selecciona la talla</h4>
+          <input type="radio" name="talla" value="S" id="talla-s" required>
+          <label for="talla-s">S</label>
+          <input type="radio" name="talla" value="M" id="talla-m" required>
+          <label for="talla-m">M</label>
+          <input type="radio" name="talla" value="L" id="talla-l" required>
+          <label for="talla-l">L</label>
+          <input type="radio" name="talla" value="XL" id="talla-xl" required>
+          <label for="talla-xl">XL</label>
+        </div><br>';
         echo '<button onclick="agregarAlCarrito(' . $id_producto . ', \'' . $nombre . '\', ' . $precio . ', \'' . $codigo_imagen . '\')">agregar al carrito</button><br><br>';
         echo '</div>';
+
 
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {

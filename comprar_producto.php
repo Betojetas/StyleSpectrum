@@ -25,6 +25,7 @@
         const carritoJSON = atob(carritoBase64);
         const carrito = JSON.parse(carritoJSON);
         let totalCompra = 0;
+        //document.write(carritoJSON);
 
         const cartItemsContainer = document.querySelector('.cart-items');
 
@@ -96,6 +97,7 @@
                         </div>
                         <p>Precio Unitario: <b>$${producto.precio}</b></p>
                         <p>Precio Total: <b>$${producto.precioTotal}</b></p>
+                        <div class="color-talla" >Talla: ${producto.talla}</div>
                     </div>
                 </div>`;
 
