@@ -146,3 +146,14 @@ function mostrarCarritoPorUnTiempo() {
     carritoContainer.style.display = "none"; // Ocultar el carrito después de 2 segundos (ajústalo según tus necesidades)
   }, 7000); // 7000 milisegundos = 7 segundos (ajústalo según tus necesidades)
 }
+
+function irAComprarProducto() {
+  // Obtener el carrito en formato JSON
+  const carritoJSON = JSON.stringify(carrito);
+
+  // Codificar el carrito en base64 para que la URL no tenga problemas con caracteres especiales
+  const carritoBase64 = btoa(carritoJSON);
+
+  // Redireccionar a la página de comprar_producto.php con el carrito como parámetro en la URL
+  window.location.href = "comprar_producto.php?carrito=" + carritoBase64;
+}

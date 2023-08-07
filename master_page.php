@@ -194,6 +194,7 @@ require_once 'conexion.php';
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <!-- Agrega los enlaces a los archivos JavaScript de Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <!-- <script src="js/carrito.js"></script> -->
 
 </body>
 
