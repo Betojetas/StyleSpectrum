@@ -123,6 +123,10 @@ require_once 'conexion.php';
                                 <a class="nav-link" href="#">Contacto</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link"
+                                    href="tallas.php?categoria=2<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Tallas</a>
+                            </li>
+                            <li class=" nav-item">
                                 <a class="nav-link" onclick="irAComprarProducto()">
                                     <i class="fas fa-shopping-cart cart-icon"></i>
                                     <span id="cantidad-carrito">
