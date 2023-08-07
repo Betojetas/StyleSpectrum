@@ -39,9 +39,15 @@
       // Codificar el carrito en base64 para que la URL no tenga problemas con caracteres especiales
       $carritoBase64 = base64_encode($carritoJSON);
 
+      $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : 1;
+
+      // Obtener los datos encriptados del carrito de compras si existen
+      $carritoEncriptado = isset($_GET['carrito']) ? $_GET['carrito'] : '';
+
 
       // Realizar la consulta para obtener los datos de los productos
-      $sql = $cnnPDO->prepare("SELECT * FROM productos");
+      $sql = $cnnPDO->prepare("SELECT * FROM productos WHERE id_categoria = :categoria");
+      $sql->bindParam(':categoria', $categoria);
       $sql->execute();
       $productos = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -58,7 +64,7 @@
         <div class="col-md-3">
           <div class="card">
             <div class="card-image">
-              <a href="detalle_producto.php?id_producto=<?php echo $id_producto; ?>&codigo_imagen=<?php echo $codigo_imagen; ?>&nombre=<?php echo $nombre; ?>&precio=<?php echo $precio; ?>&carrito=<?php echo empty($carrito) ? '' : $carritoBase64; ?>"
+              <a href="detalle_producto.php?id_producto=<?php echo $id_producto; ?>&codigo_imagen=<?php echo $codigo_imagen; ?>&nombre=<?php echo $nombre; ?>&precio=<?php echo $precio; ?>&carrito=<?php echo empty($carrito) ? '' : $carritoBase64; ?>&categoria=<?php echo $categoria; ?>"
                 style="text-decoration: none; color: inherit;">
                 <img class="card-img-top" src="imgProductos/<?php echo $codigo_imagen; ?>" alt="Imagen del producto">
                 <div class="card-overlay">

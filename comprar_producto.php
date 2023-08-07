@@ -14,9 +14,8 @@
         <h1></h1>
         <div class="cart-items"></div>
         <div class="total-row-container">Total: <span id="totalCompra"></span></div>
-        <form action="llenarDatos.php">
-            <button class="checkout-btn">Realizar Compra</button>
-        </form>
+        <a href="llenarDatos.php"><button class="checkout-btn">Realizar Compra</button></a>
+
     </div>
 
     <script>
@@ -31,22 +30,37 @@
 
 
         // Función para aumentar la cantidad del producto
-        function increaseQuantity(input) {
+        function increaseQuantity(input, index) {
             const quantity = parseInt(input.value);
             if (quantity < 10) {
                 input.value = quantity + 1;
                 updateTotal();
+                updateURL(index, input.value);
+                location.reload(); // Recargar la página para guardar los cambios
             }
         }
 
         // Función para disminuir la cantidad del producto
-        function decreaseQuantity(input) {
+        function decreaseQuantity(input, index) {
             const quantity = parseInt(input.value);
             if (quantity > 1) {
                 input.value = quantity - 1;
                 updateTotal();
+                updateURL(index, input.value);
+                location.reload(); // Recargar la página para guardar los cambios
             }
         }
+
+        // Función para actualizar la URL con la cantidad de productos actualizada
+        function updateURL(index, quantity) {
+            carrito[index].cantidad = parseInt(quantity);
+            const updatedCarritoJSON = JSON.stringify(carrito);
+            const updatedCarritoBase64 = btoa(updatedCarritoJSON);
+            const currentURL = new URL(window.location);
+            currentURL.searchParams.set('carrito', updatedCarritoBase64);
+            window.history.replaceState({}, '', currentURL);
+        }
+
 
         // Función para actualizar el precio total del producto
         function updateTotal() {
@@ -54,6 +68,7 @@
             let newTotalCompra = 0;
 
             for (let i = 0; i < carrito.length; i++) {
+
                 const producto = carrito[i];
                 const quantity = parseInt(quantityInputs[i].value);
 
@@ -78,7 +93,9 @@
             const totalCompraSpan = document.getElementById('totalCompra');
             totalCompraSpan.textContent = `$${totalCompra}`;
         }
-
+        for (let i = 0; i < carrito.length; i++) {
+            carrito[i].index = i;
+        }
 
 
         for (const producto of carrito) {
@@ -91,9 +108,9 @@
                     <div class="cart-item-details">
                         <h3>${producto.nombre}</h3>
                         <div class="quantity-input">
-                            <div class="quantity-btn" onclick="decreaseQuantity(this.nextElementSibling)">&minus;</div>
-                            <input class="qty-num" type="text" value="${producto.cantidad}" onchange="updateTotal()" onkeyup="this.value = this.value.replace(/[^0-9]/, '')">
-                            <div class="quantity-btn" onclick="increaseQuantity(this.previousElementSibling)">&#43;</div>
+                        <div class="quantity-btn" onclick="decreaseQuantity(this.nextElementSibling, ${producto.index})">&minus;</div>
+                        <input class="qty-num" type="text" value="${producto.cantidad}" onchange="updateTotal()" onkeyup="this.value = this.value.replace(/[^0-9]/, '')">
+                        <div class="quantity-btn" onclick="increaseQuantity(this.previousElementSibling, ${producto.index})">&#43;</div>
                         </div>
                         <p>Precio Unitario: <b>$${producto.precio}</b></p>
                         <p>Precio Total: <b>$${producto.precioTotal}</b></p>

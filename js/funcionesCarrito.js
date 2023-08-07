@@ -27,5 +27,6 @@ function seguirComprando() {
   const carritoBase64 = btoa(carritoJSON);
 
   // Redireccionar a la página de comprar_producto.php con el carrito como parámetro en la URL
-  window.location.href = "index.php?carrito=" + carritoBase64;
+  window.location.href =
+    "index.php?categoria=<?php echo $categoria; ?>&carrito=" + carritoBase64;
 }

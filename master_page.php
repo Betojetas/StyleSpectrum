@@ -107,11 +107,15 @@ require_once 'conexion.php';
                         <a class="nav-link" href="#">Inicio</a>
                     </li> -->
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Hombre</a>
+                                <a class="nav-link"
+                                    href="index.php?categoria=1<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Hombre</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Mujer</a>
+                                <a class="nav-link"
+                                    href="index.php?categoria=2<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Mujer</a>
                             </li>
+
+
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Ofertas</a>
                             </li>
