@@ -38,7 +38,7 @@ $cuerpo = '
     <body>
         <h1>Correo para recuperar contraseña</h1>
         <p>Hola, recibiste un correo para recuperar tu contraseña.</p>
-        <p>Ingresa <a href="http://localhost/ingenieria/desarrollowebp/unidad3/StyleSpectrum/recuperar.html?token='.$token.'&id='.$idUsuario.'">aquí</a>
+        <p>Ingresa <a href="http://localhost/ingenieria/desarrollowebp/unidad3/StyleSpectrum/validarCaducidad.php?token='.$token.'&id='.$idUsuario.'">aquí</a>
     </body>
 </html>';
 $aviso = "Gracias, Correo enviado";

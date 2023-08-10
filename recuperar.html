@@ -15,7 +15,6 @@
     <!-- css del login -->
     <link rel="stylesheet" type="text/css" href="css/login.css" />
     <!-- alertas del login -->
-    <script src="js/alertas.js"></script>
   </head>
   <body>
     <div class="container">
@@ -34,8 +33,7 @@
               required
             />
           </div>
-          <input type="hidden" name="token" id="token" />
-          <input type="hidden" name="idUsuario" id="idUsuario" />
+          <input type="text" name="idUsuario" id="idUsuario" style="display: none;" value="1" />
           <button type="submit" name="enviar" class="btn btn-primary btn-block">
             Actualizar Contraseña
           </button>
@@ -48,5 +46,6 @@
         </p>
       </div>
     </div>
+    <script src="js/recover.js"></script>
   </body>
 </html>
