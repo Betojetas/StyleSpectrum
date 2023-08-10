@@ -64,7 +64,6 @@
             echo '<div class="card-body">';
             echo '<h5 class="card-title">' . $nombre . '</h5>';
             echo '<p class="card-text">Precio: $' . $precio . '</p>';
-            echo '<p class="card-text">Talla: ' . $talla . '</p>';
             echo '</div>';
             echo '</form>';
             echo '</div>';

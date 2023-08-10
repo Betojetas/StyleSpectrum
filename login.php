@@ -22,14 +22,17 @@ if (isset($_POST['enviar'])) {
     $row = $query->fetch(PDO::FETCH_ASSOC);
     $rol = $row['roles'];
     $id_usuario = $row['id_usuario'];
+    $nombre = $row['nombre'];
 
     if ($rol == "admin") {
       $_SESSION['id_usuario'] = $id_usuario;
       $_SESSION['rol'] = $rol;
+      $_SESSION['nombre'] = $nombre;
       echo "<script>window.location='admin.php'</script>";
     } else if ($rol == "usaurio") {
       $_SESSION['id_usuario'] = $id_usuario;
       $_SESSION['rol'] = $rol;
+      $_SESSION['nombre'] = $nombre;
       echo "<script>window.location='index.php'</script>";
     }
     exit;

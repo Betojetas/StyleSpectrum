@@ -4,10 +4,8 @@ require_once 'conexion.php';
 
 if (isset($_POST['actualizar'])) {
 
-    $id_producto = 3;
-
-
     // Obtener los valores actualizados del formulario
+    $id_producto = $_POST['id_producto'];
     $nombre_actualizado = $_POST['nombre_producto'];
     $precio_actualizado = $_POST['precio'];
     $cantidad_actualizada = $_POST['cantidad'];
@@ -17,21 +15,35 @@ if (isset($_POST['actualizar'])) {
 
     // Verificar si se ha enviado una nueva imagen
     if (isset($_FILES['imagen_producto']) && $_FILES['imagen_producto']['error'] === UPLOAD_ERR_OK) {
-        // Obtener información de la nueva imagen
-        $nombre_archivo_nuevo = $_FILES['imagen_producto']['name'];
-        $ruta_destino_nueva = 'imgProductos/' . $nombre_archivo_nuevo;
-
-        // Mover la nueva imagen al directorio de destino
-        move_uploaded_file($_FILES['imagen_producto']['tmp_name'], $ruta_destino_nueva);
-
-        // Actualizar el nombre de la imagen en la base de datos y en la variable $codigo_imagen
-        $codigo_imagen = $nombre_archivo_nuevo;
+        // ... (código para manejar la subida de la nueva imagen)
+        $codigo_imagen = $nombre_unico; // Se asigna el nuevo nombre único si se sube una nueva imagen
+    } else {
+        // Si no se sube una nueva imagen, se mantiene el valor actual en la base de datos
+        $codigo_imagen = $nombre_archivo_actual; // Debes reemplazar "nombre_archivo_actual" con el valor actual en la base de datos
     }
 
+    // Manejo de la nueva imagen (si se ha subido)
+    if (isset($_FILES['nueva_imagen']) && $_FILES['nueva_imagen']['error'] === UPLOAD_ERR_OK) {
+        // Obtener el nombre y la extensión del archivo nuevo
+        $nombre_archivo_nuevo = $_FILES['nueva_imagen']['name'];
+        $extension_archivo_nuevo = pathinfo($nombre_archivo_nuevo, PATHINFO_EXTENSION);
+
+        // Generar un nombre único para el archivo nuevo
+        $nombre_unico_nuevo = uniqid() . '.' . $extension_archivo_nuevo;
+
+        // Ruta completa del archivo nuevo en la carpeta de imágenes
+        $ruta_imagen_nueva = 'imgProductos/' . $nombre_unico_nuevo;
+
+        // Actualizar el nombre de la nueva imagen en la base de datos
+        $codigo_imagen = $nombre_unico_nuevo;
+
+        // Mover el archivo nuevo a la carpeta de imágenes
+        move_uploaded_file($_FILES['nueva_imagen']['tmp_name'], $ruta_imagen_nueva);
+    }
     // Realizar la consulta para actualizar los datos del producto en la base de datos
     $sql = $cnnPDO->prepare("UPDATE productos
         SET nombre = :nombre, precio = :precio, id_categoria = :id_categoria,
-            color = :color, talla = :talla
+            color = :color, codigo_imagen = :codigo_imagen, talla = :talla
         WHERE id_producto = :id_producto
     ");
 
@@ -39,6 +51,7 @@ if (isset($_POST['actualizar'])) {
     $sql->bindParam(':precio', $precio_actualizado);
     $sql->bindParam(':id_categoria', $id_categoria_actualizada);
     $sql->bindParam(':color', $color_actualizado);
+    $sql->bindParam(':codigo_imagen', $nombre_archivo_nuevo);
     $sql->bindParam(':talla', $talla_actualizada);
     $sql->bindParam(':id_producto', $id_producto);
     $sql->execute();
@@ -52,15 +65,13 @@ if (isset($_POST['actualizar'])) {
     $sql2->bindParam(':id_producto', $id_producto);
     $sql2->execute();
 
-    $resultado = $sql;
-    if ($resultado) {
+    if ($sql && $sql2) {
         // Redireccionar a actProducto.php
         header('Location: actProducto.php?mensaje2=Se actualizó el producto correctamente');
         exit();
     } else {
         echo "Error al actualizar el producto";
     }
-
 }
 
 ?>
@@ -91,7 +102,8 @@ if (isset($_POST['actualizar'])) {
     if (isset($_GET['id_producto'])) {
         // Obtener la ID del producto si está definida
         $id_producto = isset($_GET['id_producto']) ? $_GET['id_producto'] : '';
-
+        //echo $id_producto;
+    
         // Realizar la consulta para obtener los datos del producto y del inventario según la ID
         $sql = $cnnPDO->prepare("SELECT p.* , p.nombre AS nombre_producto, i.*, c.* FROM productos p JOIN inventario i ON p.id_producto = i.id_producto JOIN categorias c ON p.id_categoria = c.id_categoria WHERE p.id_producto = :id");
         $sql->bindParam(':id', $id_producto);
@@ -132,6 +144,9 @@ if (isset($_POST['actualizar'])) {
         <div class="add-product-container">
             <h2 class="text-center">Agregar Producto:</h2>
             <form method="POST" enctype="multipart/form-data">
+
+                <input type="hidden" name="id_producto" value="<?php echo $_GET['id_producto']; ?>">
+
                 <div class="form-group">
                     <label for="name">Nombre del producto:</label>
                     <input type="text" class="form-control" id="nombre_producto" name="nombre_producto"
@@ -176,21 +191,23 @@ if (isset($_POST['actualizar'])) {
                 </div>
 
                 <div class="form-group">
-                    <label for="image">Imagen del producto:</label>
+                    <label for="imagen_producto">Imagen del producto:</label>
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="imagen_producto" name="imagen_producto">
                         <label class="custom-file-label" for="imagen_producto">Seleccionar archivo</label>
                     </div>
                     <?php
-                    // Mostrar el nombre de la imagen actual si está definido
+                    // Mostrar la imagen actual si está definida
                     if (isset($codigo_imagen)) {
-                        echo '<p>Imagen actual: ' . $codigo_imagen . '</p>';
+                        // Construir la URL de la imagen
+                        $url_imagen = 'imgProductos/' . $codigo_imagen;
+                        echo '<p>Imagen actual:</p>';
+                        echo '<img src="' . $url_imagen . '" alt="Imagen del producto">';
                     }
                     ?>
                     <p>Seleccionar una nueva imagen:</p>
                     <input type="file" name="nueva_imagen">
                 </div>
-
 
                 <div class="form-group">
                     <label for="color">Color:</label>

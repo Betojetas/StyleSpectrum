@@ -9,7 +9,7 @@
 
 <body>
 
-    <body style="font-size: 20px">
+    <body>
 
         <?php require_once 'master_page.php'; ?>
 

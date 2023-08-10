@@ -1,7 +1,14 @@
 <?php
 session_start();
 require_once 'conexion.php';
+
+// Verificar si la sesión sigue activa
+if (!isset($_SESSION['rol'])) {
+    header('Location: login.html'); // Redirigir al inicio de sesión si la sesión ha expirado
+    exit;
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,7 +67,7 @@ require_once 'conexion.php';
                             <a class="nav-link" href="usuarios.php">Usuarios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="configuracion.php">Configuración</a>
+                            <a class="nav-link" href="logout.php">Cerrar sesion</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
@@ -102,10 +109,6 @@ require_once 'conexion.php';
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <?php if ($currentPage !== 'llenarDatos.php' && $currentPage !== 'comprar_producto.php'): ?>
-
-                            <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">Inicio</a>
-                    </li> -->
                             <li class="nav-item">
                                 <a class="nav-link"
                                     href="index.php?categoria=1<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Hombre</a>
@@ -114,8 +117,6 @@ require_once 'conexion.php';
                                 <a class="nav-link"
                                     href="index.php?categoria=2<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Mujer</a>
                             </li>
-
-
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Ofertas</a>
                             </li>
@@ -125,6 +126,9 @@ require_once 'conexion.php';
                             <li class="nav-item">
                                 <a class="nav-link"
                                     href="tallas.php?categoria=2<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Tallas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="logout.php">Cerrar sesion</a>
                             </li>
                             <li class=" nav-item">
                                 <a class="nav-link" onclick="irAComprarProducto()">

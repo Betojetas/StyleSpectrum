@@ -17,64 +17,62 @@
 
     <?php require_once 'master_page.php'; ?>
     <div class="container">
-        <?php
-        require_once 'conexion.php';
+        <div class="row">
+            <?php
+            require_once 'conexion.php';
 
-        // Verificar si se ha enviado el formulario con la ID del producto
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_producto'])) {
-            $id_producto = $_POST['id_producto'];
-            // Realizar las operaciones necesarias con la ID del producto
-            // ...
-        }
-
-        // Realizar la consulta para obtener los datos de los productos
-        $sql = $cnnPDO->prepare("SELECT * FROM productos");
-        $sql->execute();
-        $productos = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-        // Inicializar un contador
-        $contador = 0;
-
-        // Generar las cards para cada producto
-        foreach ($productos as $producto) {
-            $nombre = $producto['nombre'];
-            $precio = $producto['precio'];
-            $talla = $producto['talla'];
-            $color = $producto['color'];
-            $codigo_imagen = $producto['codigo_imagen'];
-            $id_producto = $producto['id_producto'];
-
-            // Si el contador es divisible por 4, comenzar una nueva fila
-            if ($contador % 4 === 0) {
-                echo '<div class="row">';
+            // Verificar si se ha enviado el formulario con la ID del producto
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_producto'])) {
+                $id_producto = $_POST['id_producto'];
+                // Realizar las operaciones necesarias con la ID del producto
             }
 
-            // Generar la estructura de la card con los datos del producto
-            echo '<div class="col-md-3">';
-            echo '<div class="card card-product">';
-            echo '<div>';
-            echo '<input type="hidden" name="id_producto" value="' . $id_producto . '">';
-            echo '<a href="actualizarProducto.php?id_producto=' . $id_producto . '"><button class="update-btn" type="submit"><i class="fas fa-sync-alt"></i></button></a> ';
-            echo '</div>';
-            echo '<center><img class="card-img-top" src="imgProductos/' . $codigo_imagen . '" alt="Imagen del producto" style="max-width: 200px; max-height: 200px;"></center>';
-            echo '<div class="card-body">';
-            echo '<h5 class="card-title">' . $nombre . '</h5>';
-            echo '<p class="card-text">Precio: $' . $precio . '</p>';
-            echo '<p class="card-text">Talla: ' . $talla . '</p>';
-            echo '</div>';
-            echo '</div>';
-            echo '</div>';
-            // echo '<a href="actualizarProducto.php?id=' . $id_producto . '"><button class="update-btn" type="submit"><i class="fas fa-sync-alt"></i></button></a> ';
-        
-            // Incrementar el contador
-            $contador++;
+            // Realizar la consulta para obtener los datos de los productos
+            $sql = $cnnPDO->prepare("SELECT * FROM productos");
+            $sql->execute();
+            $productos = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-            // Si el contador es divisible por 4 o se han generado todas las cards, cerrar la fila
-            if ($contador % 4 === 0 || $contador === count($productos)) {
-                echo '</div>';
+            // Inicializar un contador
+            $contador = 0;
+
+            // Generar las cards para cada producto
+            foreach ($productos as $producto) {
+                $nombre = $producto['nombre'];
+                $precio = $producto['precio'];
+                $talla = $producto['talla'];
+                $color = $producto['color'];
+                $codigo_imagen = $producto['codigo_imagen'];
+                $id_producto = $producto['id_producto'];
+                ?>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-image">
+                            <a href="detalle_producto.php?id_producto=<?php echo $id_producto; ?>&codigo_imagen=<?php echo $codigo_imagen; ?>&nombre=<?php echo $nombre; ?>&precio=<?php echo $precio; ?>&carrito=<?php echo empty($carrito) ? '' : $carritoBase64; ?>&categoria=<?php echo $categoria; ?>"
+                                style="text-decoration: none; color: inherit;">
+                                <img class="card-img-top" src="imgProductos/<?php echo $codigo_imagen; ?>"
+                                    alt="Imagen del producto">
+                                <div class="card-overlay">
+                                    <div class="card-overlay-text">
+                                        Precio: $
+                                        <?php echo $precio; ?><br>
+                                        Descripción:
+                                        <?php echo $nombre; ?>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="update-btn">
+                            <a href="actualizarProducto.php?id_producto=<?php echo $id_producto; ?>">
+                                <i class="fas fa-sync-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <?php
             }
-        }
-        ?>
+            ?>
+        </div>
     </div>
 
 </body>
