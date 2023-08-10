@@ -4,13 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliminar Productos</title>
+    <title>Actualizar-producto</title>
     <link rel="stylesheet" href="css/actproducto.css">
     <!-- Librerias de sweetalert 2-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="js/alertas.js"></script>
-
 </head>
 
 <body>
@@ -76,5 +74,6 @@
     </div>
 
 </body>
+<script src="js/alertas.js"></script>
 
 </html>

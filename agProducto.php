@@ -13,7 +13,7 @@
   <!-- Librerias de sweetalert 2-->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="js/alertas.js"></script>
+
 </head>
 
 <body>
@@ -173,3 +173,4 @@ if (isset($_POST['subir_producto'])) {
 }
 ob_end_flush();
 ?>
+<script src="js/alertas.js"></script>

@@ -12,19 +12,11 @@ if (isset($_POST['actualizar'])) {
     $id_categoria_actualizada = $_POST['id_categoria'];
     $color_actualizado = $_POST['color'];
     $talla_actualizada = $_POST['talla'];
+    $codigo_imagen = $_POST['imagen_producto'];
 
-    // Verificar si se ha enviado una nueva imagen
-    if (isset($_FILES['imagen_producto']) && $_FILES['imagen_producto']['error'] === UPLOAD_ERR_OK) {
-        // ... (código para manejar la subida de la nueva imagen)
-        $codigo_imagen = $nombre_unico; // Se asigna el nuevo nombre único si se sube una nueva imagen
-    } else {
-        // Si no se sube una nueva imagen, se mantiene el valor actual en la base de datos
-        $codigo_imagen = $nombre_archivo_actual; // Debes reemplazar "nombre_archivo_actual" con el valor actual en la base de datos
-    }
-
-    // Manejo de la nueva imagen (si se ha subido)
+    // Verificar si se ha subido una nueva imagen
     if (isset($_FILES['nueva_imagen']) && $_FILES['nueva_imagen']['error'] === UPLOAD_ERR_OK) {
-        // Obtener el nombre y la extensión del archivo nuevo
+        // ... (código para manejar la subida de la nueva imagen)
         $nombre_archivo_nuevo = $_FILES['nueva_imagen']['name'];
         $extension_archivo_nuevo = pathinfo($nombre_archivo_nuevo, PATHINFO_EXTENSION);
 
@@ -40,6 +32,7 @@ if (isset($_POST['actualizar'])) {
         // Mover el archivo nuevo a la carpeta de imágenes
         move_uploaded_file($_FILES['nueva_imagen']['tmp_name'], $ruta_imagen_nueva);
     }
+
     // Realizar la consulta para actualizar los datos del producto en la base de datos
     $sql = $cnnPDO->prepare("UPDATE productos
         SET nombre = :nombre, precio = :precio, id_categoria = :id_categoria,
@@ -47,11 +40,12 @@ if (isset($_POST['actualizar'])) {
         WHERE id_producto = :id_producto
     ");
 
+
     $sql->bindParam(':nombre', $nombre_actualizado);
     $sql->bindParam(':precio', $precio_actualizado);
     $sql->bindParam(':id_categoria', $id_categoria_actualizada);
     $sql->bindParam(':color', $color_actualizado);
-    $sql->bindParam(':codigo_imagen', $nombre_archivo_nuevo);
+    $sql->bindParam(':codigo_imagen', $codigo_imagen);
     $sql->bindParam(':talla', $talla_actualizada);
     $sql->bindParam(':id_producto', $id_producto);
     $sql->execute();
@@ -81,7 +75,7 @@ if (isset($_POST['actualizar'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Actualizar-producto</title>
 
 
 </head>
@@ -191,23 +185,23 @@ if (isset($_POST['actualizar'])) {
                 </div>
 
                 <div class="form-group">
-                    <label for="imagen_producto">Imagen del producto:</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="imagen_producto" name="imagen_producto">
-                        <label class="custom-file-label" for="imagen_producto">Seleccionar archivo</label>
-                    </div>
-                    <?php
-                    // Mostrar la imagen actual si está definida
-                    if (isset($codigo_imagen)) {
-                        // Construir la URL de la imagen
+                    <?php if (isset($codigo_imagen)) { ?>
+                        <div class="custom-file">
+                            <input type="hidden" value="<?php echo $codigo_imagen; ?>" name="imagen_producto">
+                        </div>
+                        <?php
                         $url_imagen = 'imgProductos/' . $codigo_imagen;
-                        echo '<p>Imagen actual:</p>';
-                        echo '<img src="' . $url_imagen . '" alt="Imagen del producto">';
-                    }
-                    ?>
-                    <p>Seleccionar una nueva imagen:</p>
-                    <input type="file" name="nueva_imagen">
+                        ?>
+                        <label for="nueva_imagen">Seleccionar una nueva imagen:</label>
+                        <div class="custom-file">
+                            <input class="custom-file-input" value="<?php echo $codigo_imagen; ?>" id="nueva_imagen"
+                                type="file" name="nueva_imagen">
+                            <label class="custom-file-label" for="nueva_imagen">Seleccionar archivo</label>
+                        </div>
+                    <?php } ?>
                 </div>
+
+
 
                 <div class="form-group">
                     <label for="color">Color:</label>

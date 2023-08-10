@@ -60,9 +60,9 @@ if (!isset($_SESSION['rol'])) {
                         <li class="nav-item">
                             <a class="nav-link" href="inventario.php">Inventario</a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="pedidos.php">Pedidos</a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link" href="usuarios.php">Usuarios</a>
                         </li>
@@ -117,16 +117,28 @@ if (!isset($_SESSION['rol'])) {
                                 <a class="nav-link"
                                     href="index.php?categoria=2<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Mujer</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" href="#">Ofertas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Contacto</a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <a class="nav-link"
-                                    href="tallas.php?categoria=2<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Tallas</a>
+                                    href="contacto.php?categoria=1<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>"">Contacto</a>
                             </li>
+                            <li class=" nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTallas" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Tallas
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownTallas">
+                                        <a class="dropdown-item"
+                                            href="tallas_hombres.php?categoria=1<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Tallas
+                                            de Hombres</a>
+                                        <a class="dropdown-item"
+                                            href="tallas_mujeres.php?categoria=2<?= isset($_GET['carrito']) ? '&carrito=' . $_GET['carrito'] : '' ?>">Tallas
+                                            de Mujeres</a>
+                                    </div>
+                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="logout.php">Cerrar sesion</a>
                             </li>

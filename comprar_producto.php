@@ -3,8 +3,10 @@
 
 <head>
     <title>Comprar Productos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="css/comprar_producto.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 
 <body>
@@ -116,6 +118,9 @@
                         <p>Precio Total: <b>$${producto.precioTotal}</b></p>
                         <div class="color-talla" >Talla: ${producto.talla}</div>
                     </div>
+            <div class="cart-item-actions">
+                <button class="btn btn-link remove-item" onclick="removeCartItem(${producto.index})"><i class="fa fa-trash"></i></button>
+            </div>
                 </div>`;
 
             cartItemsContainer.appendChild(cartItemDiv);
@@ -125,6 +130,20 @@
         const totalCompraSpan = document.getElementById('totalCompra');
         totalCompraSpan.textContent = `$${totalCompra}`;
 
+
+        function removeCartItem(index) {
+            carrito.splice(index, 1);
+            updateURLAfterRemoval();
+            location.reload(); // Recargar la página para aplicar los cambios
+        }
+
+        function updateURLAfterRemoval() {
+            const updatedCarritoJSON = JSON.stringify(carrito);
+            const updatedCarritoBase64 = btoa(updatedCarritoJSON);
+            const currentURL = new URL(window.location);
+            currentURL.searchParams.set('carrito', updatedCarritoBase64);
+            window.history.replaceState({}, '', currentURL);
+        }
 
         function seguirComprando() {
             // Obtener el carrito en formato JSON
