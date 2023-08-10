@@ -6,14 +6,15 @@ use PHPMailer\PHPMailer\OAuth;
 use League\OAuth2\Client\Provider\Google;
 
 date_default_timezone_set('America/Mexico_City');
-
-require '../vendor/autoload.php';
+$rutaAVendor = "Ingenieria/desarrollowebp/unidad3/StyleSpectrum/";
+require 'autoload.php';
 
 $mail = new PHPMailer();
 $mail->isSMTP();
-$mail->Host = "smtp.google.com";
+$mail->Host = "ssl://smtp.gmail.com";
 $mail->Port = 465;
 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+//$mail->SMTPDebug = 4;
 $mail->SMTPAuth = true;
 $mail->AuthType = 'XOAUTH2';
 
@@ -50,6 +51,7 @@ $mail->AltBody = 'This is a plain text message body';
 
 if(!$mail->send()){
     echo "Mailer Error: ".$mail->ErrorInfo;
+    
 }else{
     echo $aviso;
 }
