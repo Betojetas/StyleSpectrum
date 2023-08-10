@@ -249,21 +249,26 @@
     }
 
     function irAComprarProducto() {
-
         // Obtener el carrito en formato JSON
         const carritoJSON = JSON.stringify(carrito);
 
         // Codificar el carrito en base64 para que la URL no tenga problemas con caracteres especiales
         const carritoBase64 = btoa(carritoJSON);
 
-        // Redireccionar a la página de comprar_producto.php con el carrito como parámetro en la URL
-        window.location.href = "comprar_producto.php?carrito=" + carritoBase64;
+        // Obtener los parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Obtener el valor de la categoría de los parámetros de la URL
+        const categoria = urlParams.get('categoria');
+
+        // Construir la URL con los parámetros
+        const url = `comprar_producto.php?categoria=${categoria}&carrito=${carritoBase64}`;
+
+        // Redireccionar a la página de comprar_producto.php con los parámetros en la URL
+        window.location.href = url;
     }
 
+
 </script>
-
-
-<!-- <script src="js/carrito.js"></script> -->
-<!-- <script src="js/funcionesCarrito.js"></script> -->
 
 </html>

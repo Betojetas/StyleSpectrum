@@ -30,10 +30,17 @@
 
 
 
-$host = 'DESKTOP-FP8PSR4';
+// $host = 'DESKTOP-FP8PSR4';
+// $dbname = 'style_spectrum';
+// $username = 'luis';
+// $pasword = 'luis2002';
+// $puerto = 1433;
+
+
+$host = 'DESKTOP-6D8CV96';
 $dbname = 'style_spectrum';
-$username = 'luis';
-$pasword = 'luis2002';
+$username = 'erik_admin';
+$pasword = '2002';
 $puerto = 1433;
 
 //phpinfo();

@@ -39,7 +39,8 @@
       // Codificar el carrito en base64 para que la URL no tenga problemas con caracteres especiales
       $carritoBase64 = base64_encode($carritoJSON);
 
-      $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : 1;
+      //$categoria = isset($_GET['categoria']) ? $_GET['categoria'] : 1;
+      $categoria = isset($_GET['categoria']) ? intval($_GET['categoria']) : 1;
 
       // Obtener los datos encriptados del carrito de compras si existen
       $carritoEncriptado = isset($_GET['carrito']) ? $_GET['carrito'] : '';
@@ -90,7 +91,46 @@
       ?>
     </div>
   </div>
-  <script src="js/funcionesCarrito.js"></script>
+  <script>
+    function seguirComprando() {
+      // Obtener el carrito en formato JSON
+      const carritoJSON = JSON.stringify(carrito);
+
+      // Codificar el carrito en base64 para que la URL no tenga problemas con caracteres especiales
+      const carritoBase64 = btoa(carritoJSON);
+
+      // Obtener los parámetros de la URL
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Obtener el valor de la categoría de los parámetros de la URL
+      const categoria = urlParams.get("categoria");
+
+      // Construir la URL con los parámetros para redireccionar a index.php
+      const url = `index.php?categoria=${categoria}&carrito=${carritoBase64}`;
+
+      // Redireccionar a la página index.php con los parámetros en la URL
+      window.location.href = url;
+    }
+
+
+    function irAComprarProducto() {
+      // Obtener los parámetros de la URL
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Obtener el valor de la categoría de los parámetros de la URL
+      const categoria = urlParams.get('categoria');
+
+      // Obtener el valor del carrito de los parámetros de la URL
+      const carrito = urlParams.get('carrito');
+
+      // Construir la URL con los parámetros
+      const url = `comprar_producto.php?categoria=${categoria}&carrito=${carrito}`;
+
+      // Redireccionar a la página de comprar_producto.php con los parámetros en la URL
+      window.location.href = url;
+    }
+
+  </script>
 </body>
 
 </html>

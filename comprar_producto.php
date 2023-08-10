@@ -14,7 +14,7 @@
         <h1></h1>
         <div class="cart-items"></div>
         <div class="total-row-container">Total: <span id="totalCompra"></span></div>
-        <a href="llenarDatos.php"><button class="checkout-btn">Realizar Compra</button></a>
+        <button class="checkout-btn" onclick="irAComprarProducto()">Realizar Compra</button>
 
     </div>
 
@@ -125,8 +125,47 @@
         const totalCompraSpan = document.getElementById('totalCompra');
         totalCompraSpan.textContent = `$${totalCompra}`;
 
+
+        function seguirComprando() {
+            // Obtener el carrito en formato JSON
+            const carritoJSON = JSON.stringify(carrito);
+
+            // Codificar el carrito en base64 para que la URL no tenga problemas con caracteres especiales
+            const carritoBase64 = btoa(carritoJSON);
+
+            // Obtener los parámetros de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Obtener el valor de la categoría de los parámetros de la URL
+            const categoria = urlParams.get("categoria");
+
+            // Construir la URL con los parámetros para redireccionar a index.php
+            const url = `index.php?categoria=${categoria}&carrito=${carritoBase64}`;
+
+            // Redireccionar a la página index.php con los parámetros en la URL
+            window.location.href = url;
+        }
+
+
+        function irAComprarProducto() {
+            // Obtener los parámetros de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Obtener el valor de la categoría de los parámetros de la URL
+            const categoria = urlParams.get('categoria');
+
+            // Obtener el valor del carrito de los parámetros de la URL
+            const carrito = urlParams.get('carrito');
+
+            // Construir la URL con los parámetros para llenarDatos.php
+            const url = `llenarDatos.php?categoria=${categoria}&carrito=${carrito}`;
+
+            // Redireccionar a la página de llenarDatos.php con los parámetros en la URL
+            window.location.href = url;
+        }
+
     </script>
-    <script src="js/funcionesCarrito.js"></script>
+
 </body>
 
 

@@ -108,6 +108,25 @@
             <input type="submit" value="Enviar">
         </form>
     </div>
+
+    <script>
+        function seguirComprando() {
+            // Obtener los parámetros de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Obtener el valor de la categoría de los parámetros de la URL
+            const categoria = urlParams.get('categoria');
+
+            // Obtener el valor del carrito de los parámetros de la URL
+            const carrito = urlParams.get('carrito');
+
+            // Construir la URL con los parámetros para llenarDatos.php
+            const url = `index.php?categoria=${categoria}&carrito=${carrito}`;
+
+            // Redireccionar a la página de llenarDatos.php con los parámetros en la URL
+            window.location.href = url;
+        }
+    </script>
 </body>
 
 </html>
