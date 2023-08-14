@@ -1,5 +1,5 @@
 <?php
-//hola 
+// hola 
 // /* Conectar a una base de datos de MySQL Local */
 // $db_host = 'mysql:dbname=style_spectrum;host=localhost';
 // $usuario = 'root';
