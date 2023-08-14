@@ -3,76 +3,13 @@
 
 <head>
     <title>Formulario de la Tienda de Ropa Elegante</title>
-    <style>
-        body {
-            background-color: white;
-            color: black;
-            font-family: Arial, sans-serif;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
-            max-width: 800px;
-            /* Ajustamos el ancho máximo del div */
-            margin: 0 auto;
-        }
-
-        form {
-            width: 100%;
-        }
-
-        label,
-        input {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        input[type="text"],
-        select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .input-group label {
-            flex: 1;
-        }
-
-        .input-group input {
-            flex: 2;
-        }
-
-        input[type="submit"] {
-            background-color: black;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #333;
-        }
-    </style>
+    <link rel="stylesheet" href="css/llenar_datos.css">
 </head>
 
 <body>
     <?php require_once 'master_page.php'; ?>
     <div class="cart-item">
-        <form>
+        <form method="POST">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required placeholder="Nombre">
 
@@ -93,7 +30,7 @@
             <div class="input-group">
                 <div style="flex: 1;">
                     <label for="codigo-postal">Código Postal:</label>
-                    <input type="text" id="codigo-postal" name="codigo-postal" required
+                    <input type="text" id="codigo-postal" name="codigo_postal" required
                         placeholder="Codigo Postal- Ejemplo 25015">
                 </div>
                 <div style="flex: 1;">
@@ -105,8 +42,9 @@
             <label for="ciudad">Ciudad:</label>
             <input type="text" id="ciudad" name="ciudad" required placeholder="Ciudad"><br>
 
-            <input type="submit" value="Enviar">
+            <input type="submit" name="comprar" value="comprar">
         </form>
+
     </div>
 
     <script>
@@ -130,3 +68,57 @@
 </body>
 
 </html>
+
+<?php
+ob_start();
+require_once 'conexion.php';
+
+if (isset($_POST['comprar'])) {
+    // Recuperar la ID de usuario de la sesión
+    $id_usuario = $_SESSION["id_usuario"];
+
+    // Recuperar los datos del formulario
+    $nombre = $_POST["nombre"];
+    $apellido = $_POST["apellido"];
+    $telefono = $_POST["telefono"];
+    $direccion = $_POST["direccion"];
+    $referencias = $_POST["referencias"];
+    $codigo_postal = $_POST["codigo_postal"];
+    $estado = $_POST["estado"];
+    $ciudad = $_POST["ciudad"];
+
+    $fecha = date("Y-m-d"); // Fecha actual
+    $status = "Pendiente"; // Estado inicial del pedido
+
+    // Preparar la consulta SQL para insertar el pedido
+    $sql = $cnnPDO->prepare("INSERT INTO Pedidos (id_usuario, fecha, status, nombre, apellido, telefono, direccion, referencias, codigo_postal, estado, ciudad) 
+                            VALUES (:id_usuario, :fecha, :status, :nombre, :apellido, :telefono, :direccion, :referencias, :codigo_postal, :estado, :ciudad)");
+
+    // Enlazar los parámetros
+    $sql->bindParam(':id_usuario', $id_usuario);
+    $sql->bindParam(':status', $status);
+    $sql->bindParam(':nombre', $nombre);
+    $sql->bindParam(':apellido', $apellido);
+    $sql->bindParam(':fecha', $fecha);
+    $sql->bindParam(':telefono', $telefono);
+    $sql->bindParam(':direccion', $direccion);
+    $sql->bindParam(':referencias', $referencias);
+    $sql->bindParam(':codigo_postal', $codigo_postal);
+    $sql->bindParam(':estado', $estado);
+    $sql->bindParam(':ciudad', $ciudad);
+
+    // Execute the query
+    if ($sql->execute()) {
+        echo "<script>
+        // Espera 5 segundos y luego redirige
+        setTimeout(function() {
+            window.location.href = 'logout.php';
+        }, 1); 
+    </script>";
+        exit();
+    } else {
+        echo "Error al insertar el registro: " . $sql->errorInfo()[2];
+    }
+}
+ob_end_flush();
+?>

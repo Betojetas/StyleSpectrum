@@ -139,29 +139,3 @@ h1 {
   font-weight: bold;
   outline: none;
 }
-
-.cart-item-actions {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  overflow: hidden;
-  width: 150px; /* Aumentamos el ancho para acomodar el ícono */
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
-
-.remove-item {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  color: red;
-  margin-right: 10px; /* Agregamos margen a la derecha para separar el ícono del input */
-}
-
-/* Estilos para el ícono de bote de basura */
-.remove-item i {
-  display: inline-block;
-}

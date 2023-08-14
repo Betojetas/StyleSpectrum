@@ -15,6 +15,11 @@ if (isset($_POST['eliminar'])) {
         $stmt->execute();
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Eliminar el archivo de imagen de la carpeta
+        $nombreArchivo = $resultado['codigo_imagen'];
+        $rutaArchivo = 'imgProductos/' . $nombreArchivo;
+        unlink($rutaArchivo);
+
         // Eliminar fila en la tabla inventario
         $sql1 = "DELETE FROM inventario WHERE id_producto = :id_producto";
         $stmt1 = $cnnPDO->prepare($sql1);
@@ -30,10 +35,6 @@ if (isset($_POST['eliminar'])) {
         // Confirma la transacción si ambas consultas se completaron correctamente
         $cnnPDO->commit();
 
-        // Eliminar el archivo de imagen de la carpeta
-        $nombreArchivo = $resultado['codigo_imagen'];
-        $rutaArchivo = 'imgProductos/' . $nombreArchivo;
-        unlink($rutaArchivo);
 
         header('Location: eliProducto.php?mensaje2=Se elimino correctamente');
         exit(); // Salir del script después de enviar la redirección
